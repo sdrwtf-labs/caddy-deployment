@@ -1,0 +1,8 @@
+# Ignore environment variables
+.env
+.env.*
+!.env.example
+
+# Ignore OS generated files
+.DS_Store
+Thumbs.db

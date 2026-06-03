@@ -1,0 +1,42 @@
+{
+    email {$ACME_EMAIL}
+}
+
+# The Wildcard Configuration
+*.int.sdr.wtf {
+    tls {
+        dns cloudflare {$CLOUDFLARE_API_TOKEN}
+        resolvers 1.1.1.1
+    }
+
+    # 1. Route for Technitium DNS Dashboard
+    @dns host dns.int.sdr.wtf
+    handle @dns {
+        reverse_proxy 10.0.0.20:5380
+    }
+
+    # 2. Route for Proxmox VE
+    @pve host pve.int.sdr.wtf
+    handle @pve {
+        reverse_proxy 10.0.0.10:8006 {
+            transport http {
+                tls_insecure_skip_verify
+            }
+        }
+    }
+
+    # 3. Route for Proxmox MG
+    @pmg host pmg.int.sdr.wtf
+    handle @pve {
+        reverse_proxy 10.0.0.12:8006 {
+            transport http {
+                tls_insecure_skip_verify
+            }
+        }
+    } 
+
+    # Fallback / Default for anything else
+    handle {
+        respond "Service not found or not yet configured in Caddy." 404
+    }
+}
