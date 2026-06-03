@@ -24,7 +24,16 @@ git clone git@github.com:sdrwtf-labs/caddy-deployment.git .
 cp .env.example .env
 ```
 
+Edit `.env` and provide your real Cloudflare API token and email address.
+
+3. Build and start the proxy:
+
+```bash
+docker compose up -d --build
+```
+
 *(The `--build` flag is crucial for the first run or after Caddy version updates to compile the Cloudflare module).*
+
 
 ## Adding New Services
 
