@@ -6,8 +6,8 @@
 *.int.sdr.wtf {
     tls {
         dns cloudflare {$CLOUDFLARE_API_TOKEN}
-        resolvers 1.1.1.1
-        propagation_delay 20s
+        resolvers 1.1.1.1:53 1.0.0.1:53
+        propagation_delay 60s
     }
 
     # 1. Route for Technitium DNS Dashboard
@@ -40,6 +40,16 @@
     @semaphore host semaphore.int.sdr.wtf
     handle @semaphore {
         reverse_proxy 10.0.0.20:3000
+    }
+
+    # 5. Route for Proxmox Backup Server (Hetzner via WireGuard)
+    @pbs host pbs.int.sdr.wtf
+    handle @pbs {
+        reverse_proxy https://192.168.7.2:8007 {
+            transport http {
+                tls_insecure_skip_verify
+            }
+        }
     }
 
     # Fallback / Default for anything else

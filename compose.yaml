@@ -3,6 +3,9 @@ services:
     build: .
     container_name: caddy-proxy
     restart: unless-stopped
+    dns:
+      - 1.1.1.1
+      - 1.0.0.1
     ports:
       - "80:80"
       - "443:443"
