@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   deploy:
     runs-on: [self-hosted, homelab]
@@ -15,8 +18,14 @@ jobs:
 
       - name: Deploy to Host Directory and Restart
         run: |
+          echo "Removing runner git state to protect host..."
+          rm -rf .git
+
           echo "Copying files to host directory..."
           cp -a . /opt/caddy/
+
+          echo "Fixing ownership to match the host directory owner..."
+          chown -R $(stat -c '%u:%g' /opt/caddy) /opt/caddy/
 
           echo "Restarting Caddy container..."
           cd /opt/caddy
