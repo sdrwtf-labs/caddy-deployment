@@ -1,0 +1,10 @@
+version: 2
+updates:
+  # Check for Docker image updates (Dockerfile and compose.yaml)
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    # Optional: Automatically assign PRs to yourself
+    assignees:
+      - "sdrwtf"
