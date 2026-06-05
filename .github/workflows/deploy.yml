@@ -5,31 +5,19 @@ on:
     branches:
       - main
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 jobs:
   deploy:
     runs-on: [self-hosted, homelab]
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Deploy to Host Directory and Restart
-        run: |
-          echo "Removing runner git state to protect host..."
-          rm -rf .git
-
-          echo "Copying files to host directory..."
-          cp -a . /opt/caddy/
-
-          echo "Fixing ownership to match the host directory owner..."
-          chown -R $(stat -c '%u:%g' /opt/caddy) /opt/caddy/
-
-          echo "Restarting Caddy container..."
-          cd /opt/caddy
-          docker compose up -d --build
-
-          echo "Cleaning up old docker images..."
-          docker system prune -f
+      - name: Execute deployment via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 10.0.0.20
+          username: sd
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /opt/caddy
+            git pull origin main
+            docker compose up -d --build
+            docker system prune -f
