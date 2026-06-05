@@ -18,6 +18,7 @@ jobs:
           key: ${{ secrets.DOCKER_01 }}
           script: |
             cd /opt/caddy
+            git checkout main
             git pull origin main
             docker compose up -d --build
             docker system prune -f
