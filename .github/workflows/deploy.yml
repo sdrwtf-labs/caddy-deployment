@@ -15,7 +15,7 @@ jobs:
         with:
           host: 10.0.0.20
           username: sd
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          key: ${{ secrets.DOCKER_01 }}
           script: |
             cd /opt/caddy
             git pull origin main
