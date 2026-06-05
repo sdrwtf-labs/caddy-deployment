@@ -1,0 +1,26 @@
+name: Deploy Caddy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, homelab]
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Host Directory and Restart
+        run: |
+          echo "Copying files to host directory..."
+          cp -a . /opt/caddy/
+
+          echo "Restarting Caddy container..."
+          cd /opt/caddy
+          docker compose up -d --build
+
+          echo "Cleaning up old docker images..."
+          docker system prune -f
