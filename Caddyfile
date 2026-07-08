@@ -13,7 +13,7 @@
     # 1. Route for Technitium DNS Dashboard
     @dns host dns.int.sdr.wtf
     handle @dns {
-        reverse_proxy 10.0.0.20:5380
+        reverse_proxy 10.0.30.20:5380
     }
 
     # 2. Route for Proxmox VE
@@ -39,7 +39,7 @@
     # 4. Route for Ansible Semaphore
     @semaphore host semaphore.int.sdr.wtf
     handle @semaphore {
-        reverse_proxy 10.0.0.20:3000
+        reverse_proxy 10.0.30.20:3000
     }
 
     # 5. Route for Proxmox Backup Server (Hetzner via WireGuard)
