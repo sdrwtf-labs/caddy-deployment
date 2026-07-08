@@ -13,7 +13,7 @@ jobs:
       - name: Execute deployment via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: 10.0.0.20
+          host: 10.0.30.20
           username: sd
           key: ${{ secrets.DOCKER_01 }}
           script: |
