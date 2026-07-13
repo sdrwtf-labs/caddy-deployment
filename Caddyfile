@@ -52,6 +52,12 @@
         }
     }
 
+    # 6. Route for Checkmk Monitoring
+    @checkmk host checkmk.int.sdr.wtf
+    handle @checkmk {
+        reverse_proxy 10.0.30.20:8080
+    }
+
     # Fallback / Default for anything else
     handle {
         respond "Service not found or not yet configured in Caddy." 404
