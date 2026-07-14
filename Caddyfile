@@ -2,7 +2,6 @@
     email {$ACME_EMAIL}
 }
 
-# The Wildcard Configuration
 *.int.sdr.wtf {
     tls {
         dns cloudflare {$CLOUDFLARE_API_TOKEN}
@@ -10,40 +9,53 @@
         propagation_delay 60s
     }
 
-    # 1. Route for Technitium DNS Dashboard
     @dns host dns.int.sdr.wtf
     handle @dns {
         reverse_proxy 10.0.30.20:5380
     }
 
-    # 2. Route for Proxmox VE
-    @pve host pve.int.sdr.wtf
-    handle @pve {
-        reverse_proxy 10.0.0.10:8006 {
+    @pve00 host pve-00.int.sdr.wtf
+    handle @pve00 {
+        reverse_proxy https://10.0.0.10:8006 {
             transport http {
                 tls_insecure_skip_verify
             }
         }
     }
 
-    # 3. Route for Proxmox MG
-    @pmg host pmg.int.sdr.wtf
-    handle @pmg {
-        reverse_proxy 10.0.0.12:8006 {
+    @pve01 host pve-01.int.sdr.wtf
+    handle @pve01 {
+        reverse_proxy https://10.0.0.11:8006 {
             transport http {
                 tls_insecure_skip_verify
             }
         }
     }
 
-    # 4. Route for Ansible Semaphore
+    @pve02 host pve-02.int.sdr.wtf
+    handle @pve02 {
+        reverse_proxy https://10.0.0.12:8006 {
+            transport http {
+                tls_insecure_skip_verify
+            }
+        }
+    }
+
+    @pve03 host pve-03.int.sdr.wtf
+    handle @pve03 {
+        reverse_proxy https://10.0.0.13:8006 {
+            transport http {
+                tls_insecure_skip_verify
+            }
+        }
+    }
+
     @semaphore host semaphore.int.sdr.wtf
     handle @semaphore {
         reverse_proxy 10.0.30.20:3000
     }
 
-    # 5. Route for Proxmox Backup Server (Hetzner via WireGuard)
-    @pbs host pbs.int.sdr.wtf
+    @pbs host pbs-01.int.sdr.wtf
     handle @pbs {
         reverse_proxy https://192.168.7.2:8007 {
             transport http {
@@ -52,13 +64,11 @@
         }
     }
 
-    # 6. Route for Checkmk Monitoring
     @checkmk host checkmk.int.sdr.wtf
     handle @checkmk {
-        reverse_proxy 10.0.30.20:8080
+        reverse_proxy 10.0.30.19:80
     }
 
-    # Fallback / Default for anything else
     handle {
         respond "Service not found or not yet configured in Caddy." 404
     }
