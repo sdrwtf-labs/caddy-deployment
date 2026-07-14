@@ -66,6 +66,8 @@
 
     @checkmk host checkmk.int.sdr.wtf
     handle @checkmk {
+        # Redirect root requests to the Checkmk site directory
+        redir / /cmk/
         reverse_proxy 10.0.30.19:80
     }
 
