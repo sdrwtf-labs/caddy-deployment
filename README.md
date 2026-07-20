@@ -21,7 +21,7 @@ To prevent this, this deployment includes specific overrides:
 
 ## Deployment
 
-1. Prepare the deployment directory:
+1. Prepare the deployment directory: 
 ```bash
 sudo mkdir -p /opt/caddy
 sudo chown $USER:$USER /opt/caddy
